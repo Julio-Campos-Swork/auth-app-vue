@@ -213,7 +213,7 @@ const verifyPassword = ref("123123");
 const showHidePassLogin = ref(false);
 const showHidePassRegister1 = ref(false);
 const showHidePassRegister2 = ref(false);
-const BASE_URL = 'https://051a-201-138-154-72.ngrok-free.app/authAPI/public/'
+const BASE_URL = 'https://94d2-201-138-154-72.ngrok-free.app/authAPI/public/'
 
 
 onMounted(() => {
@@ -223,7 +223,7 @@ onMounted(() => {
   const name = getParameterByName('name')
   const email = getParameterByName('email')
   const avatar = getParameterByName('avatar')
-  console.log({token, name, email, avatar})
+  console.log({token, name, email, avatar, error})
 })
 
 
@@ -234,7 +234,6 @@ const getParameterByName = (name) => {
     const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
     const results = regex.exec(window.location.href);
     //si no existe retornamos null
-    console.log({results})
     if (!results) return null;
     if (!results[2]) return '';
     // existe? lo retornamos el parametro

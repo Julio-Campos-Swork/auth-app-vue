@@ -213,7 +213,7 @@ const verifyPassword = ref("123123");
 const showHidePassLogin = ref(false);
 const showHidePassRegister1 = ref(false);
 const showHidePassRegister2 = ref(false);
-const BASE_URL = 'https://94d2-201-138-154-72.ngrok-free.app/authAPI/public/'
+const BASE_URL = 'https://d3b6-201-138-154-72.ngrok-free.app/authAPI/public/'
 
 
 onMounted(() => {

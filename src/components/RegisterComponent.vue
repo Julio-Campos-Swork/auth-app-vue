@@ -2,7 +2,14 @@
 	<v-container class="centrar">
 		<v-card elevation="4" rounded="lg" min-width="400">
 			<img src="../assets/dev.svg" height="20" class="mt-8 ml-16 mb-4" />
-			<p class="px-4">Login</p>
+			<p class="text-h4 px-10 font-weight-bold">
+				Join thousands of learners from around the world
+			</p>
+			<br />
+			<p class="px-10">
+				Master web development by making real-life projects. There are multiple paths for
+				you to choose
+			</p>
 			<br />
 			<v-card-text class="px-10">
 				<v-form ref="form" v-model="valid" lazy-validation>
@@ -37,7 +44,7 @@
 					rounded="xs"
 					block
 					@click="loginUser()"
-					>Login</v-btn
+					>Start coding now</v-btn
 				>
 				<p class="text-center mt-6 mb-6 text-grey text-caption">
 					or continue with these social profile
@@ -69,11 +76,6 @@
 						>mdi-github</v-icon
 					>
 				</v-row>
-				<v-row justify="center" class="mb-2">
-					<p class="text-caption">Don't hace an account yet?</p>
-					&nbsp
-					<RouterLink to="register" class="text-caption"> Register</RouterLink>
-				</v-row>
 			</v-card-text>
 		</v-card>
 	</v-container>
@@ -85,17 +87,63 @@
 	import { useRouter, useRoute } from 'vue-router'
 	import { useUserStore } from '@/store/userStore'
 	const router = useRouter()
-	const useStore = useUserStore()
+	const route = useRoute()
+	const useUser = useUserStore()
 	const valid = ref(true)
+	const tab = ref(null)
 	const email = ref('julio.c.ud@gmail.com')
 	const password = ref('123123')
+	const verifyPassword = ref('123123')
 	const showHidePassLogin = ref(false)
+	const showHidePassRegister1 = ref(false)
+	const showHidePassRegister2 = ref(false)
+	const BASE_URL = 'https://bc85-201-138-154-72.ngrok-free.app/authenticationAPI/public/'
 
+	onMounted(() => {
+		const error = getParameterByName('error')
+		const token = getParameterByName('token')
+		const name = getParameterByName('name')
+		const email = getParameterByName('email')
+		const avatar = getParameterByName('avatar')
+		useUser.user = {
+			token: token,
+			name: name,
+			email: email,
+			avatar: avatar,
+		}
+		console.log({ token, name, email, avatar, error })
+
+		console.log('useUser.user', useUser.user)
+		if (token) router.push({ name: 'Home' })
+	})
+
+	const getParameterByName = (name) => {
+		// obtenemos el nombre del parametro limpio
+		name = name.replace(/[\[\]]/g, '\\$&')
+		//verificamos por regex que exita el valor
+		const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
+		const results = regex.exec(window.location.href)
+		//si no existe retornamos null
+		if (!results) return null
+		if (!results[2]) return ''
+		// existe? lo retornamos el parametro
+		return decodeURIComponent(results[2].replace(/\+/g, ' '))
+	}
 	const socialLogin = async (provider) => {
-		await useStore.socialLogin(provider)
+		try {
+			const response = await axios.post(`${BASE_URL}api/auth`, { provider })
+			console.log({ response })
+			window.location.href = response.data.redirectUrl
+		} catch (error) {
+			console.log({ error })
+		}
 	}
 	const loginUser = async () => {
-		await useStore.loginUser(email.value, password.value)
+		console.log('login')
+	}
+
+	const registrar = async () => {
+		console.log('data register')
 	}
 
 	const emailRules = reactive([
